@@ -103,7 +103,7 @@ mod tests {
     }
 
     #[test]
-    fn test_general() {
+    fn test_cross_root_chain() {
         // L0
         let mut root = Box::new(TreeNode::new(1));
         // L1
@@ -119,5 +119,27 @@ mod tests {
 
         assert_eq!(width_of_binary_tree_iterative(Some(root.clone())), 5);
         assert_eq!(width_of_binary_tree_recursive(Some(root)), 5);
+    }
+
+    #[test]
+    fn test_inter_branch_chain() {
+        // L0
+        let mut root = Box::new(TreeNode::new(1));
+        // L1
+        root.left = Some(Box::new(TreeNode::new(2)));
+        root.right = Some(Box::new(TreeNode::new(3)));
+        // L2
+        root.left.as_mut().unwrap().left = Some(Box::new(TreeNode::new(4)));
+        root.left.as_mut().unwrap().right = Some(Box::new(TreeNode::new(5)));
+        //root.right.as_mut().unwrap().right = Some(Box::new(TreeNode::new(8)));
+        // L3
+        root.left.as_mut().unwrap().left.as_mut().unwrap().left = Some(Box::new(TreeNode::new(6)));
+        root.left.as_mut().unwrap().right.as_mut().unwrap().right = Some(Box::new(TreeNode::new(7)));
+        // L4
+        root.left.as_mut().unwrap().left.as_mut().unwrap().left.as_mut().unwrap().left = Some(Box::new(TreeNode::new(8)));
+        root.left.as_mut().unwrap().right.as_mut().unwrap().right.as_mut().unwrap().right = Some(Box::new(TreeNode::new(9)));
+
+        assert_eq!(width_of_binary_tree_iterative(Some(root.clone())), 6);
+        assert_eq!(width_of_binary_tree_recursive(Some(root)), 6);
     }
 }
